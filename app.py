@@ -1,10 +1,9 @@
 import ptvsd
 from process_events import process_text_event
-
-ptvsd.enable_attach(address=('0.0.0.0', 5679))
-
 import pika
 import json
+
+ptvsd.enable_attach(address=('0.0.0.0', 5679))
 
 RABBITMQ_URL = 'amqp://guest:guest@rabbitmq:5672/'
 QUEUE_NAME = 'ai_events'
