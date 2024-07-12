@@ -1,6 +1,6 @@
 import onnxruntime_genai as og
 
-MODEL_PATH = '/models/Phi-3-mini-128k-instruct-onnx'
+MODEL_PATH = '/models/Phi-3-mini-128k-instruct-onnx/cpu_and_mobile/cpu-int4-rtn-block-32-acc-level-4'
 
 def initialize_model():
     print("Loading model...")
@@ -12,13 +12,7 @@ def initialize_model():
 
 def process_text(model, tokenizer, tokenizer_stream, text):
     search_options = {
-        'do_sample': False,
-        'max_length': None,
-        'min_length': None,
-        'top_p': None,
-        'top_k': None,
-        'temperature': None,
-        'repetition_penalty': None
+        'max_length': 1024 * 120,
     }
     chat_template = '\n{input} \n'
     prompt = f'{chat_template.format(input=text)}'
