@@ -9,6 +9,9 @@ import time
 
 redis_client = redis.StrictRedis(host='redis', port=6379, db=0)
 
+RABBITMQ_URL = 'amqp://guest:guest@rabbitmq:5672/'
+
+
 def process_text_event(task_id):
     redis_client.set(f'task_{task_id}_status', 'in_progress', ex=3600)
     text = redis_client.get(f'task_{task_id}_process_text_ai')
@@ -24,7 +27,8 @@ def callback(ch, method, properties, body):
         process_text_event(event['id'])
 
 def consume_events():
-    connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
+    parameters = pika.URLParameters(RABBITMQ_URL)
+    connection = pika.BlockingConnection(parameters)
     channel = connection.channel()
     channel.queue_declare(queue='ai_events')
 
