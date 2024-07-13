@@ -13,6 +13,7 @@ def initialize_model():
 def process_text(model, tokenizer, tokenizer_stream, text):
     search_options = {
         'max_length': 1024 * 120,
+        'repetition_penalty': 1.2,
     }
     chat_template = '\n{input} \n'
     prompt = f'{chat_template.format(input=text)}'
