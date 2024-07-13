@@ -1,6 +1,6 @@
 import onnxruntime_genai as og
 
-MODEL_PATH = '/models/Phi-3-mini-128k-instruct-onnx/cpu_and_mobile/cpu-int4-rtn-block-32-acc-level-4'
+MODEL_PATH = '/models/Phi-3/cpu_and_mobile/cpu-int4-rtn-block-32-acc-level-4'
 
 def initialize_model():
     print("Loading model...")
