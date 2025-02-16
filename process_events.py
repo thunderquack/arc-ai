@@ -1,3 +1,4 @@
+import language_tool_python
 import ollama
 import redis
 import time
@@ -18,12 +19,19 @@ TEXT:
         input.append({'role': 'user', 'content': text})
         start_time = time.time()
         try:
+            '''
             response = ollama.chat(
                 model='mistral-nemo',
                 messages=input,
                 options={"num_ctx": 25600}
             )
             processed_text = response['message']['content']
+            '''
+            tool = language_tool_python.LanguageTool("de-DE")  # Немецкий язык
+            matches = tool.check(text)
+
+            # Применяем исправления
+            processed_text = language_tool_python.utils.correct(text, matches)
             redis_client.set(f'task_{task_id}_process_text_ai', processed_text, ex=3600)
             redis_client.set(f'task_{task_id}_status', 'processed', ex=3600)
         except Exception as e:
