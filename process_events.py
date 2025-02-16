@@ -1,5 +1,6 @@
 import ollama
 import redis
+import time
 
 redis_client = redis.StrictRedis(host='redis', port=6379, db=0)
 
@@ -15,6 +16,7 @@ TEXT:
 '''
         text = prompt + text
         input.append({'role': 'user', 'content': text})
+        start_time = time.time()
         try:
             response = ollama.chat(
                 model='mistral-nemo',
@@ -27,3 +29,5 @@ TEXT:
         except Exception as e:
             redis_client.set(f'task_{task_id}_process_text_ai', e, ex=3600)
             redis_client.set(f'task_{task_id}_status', 'failed', ex=3600)
+        end_time = time.time()
+        print(f'Processing time: {end_time - start_time}')
